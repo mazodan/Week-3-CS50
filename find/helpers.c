@@ -17,11 +17,23 @@ bool search(int value, int values[], int n)
 
     int start = 0;
     int end = n - 1;
-    int med = (end - start)/2;
+    int med = (end + start)/2;
 
     // Start and End have not crossed yet
     while(end >= start){
+        // Determine if med contains the value
+        if(values[med] == value){
+            return true;
+        } else {
+            // Check if the value is greater or lesser than the med
+            if(value > values[med]){
+                start = med + 1;
+            } else if(value < values[med]) {
+                end = med - 1;
+            }
 
+            med = (end + start)/2;
+        }
     }
 
     return false;
