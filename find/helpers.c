@@ -15,6 +15,15 @@ bool search(int value, int values[], int n)
 {
     // TODO: implement a searching algorithm
 
+    int start = 0;
+    int end = n - 1;
+    int med = (end - start)/2;
+
+    // Start and End have not crossed yet
+    while(end >= start){
+
+    }
+
     return false;
 }
 
