@@ -233,80 +233,143 @@ bool move(int tile)
         if(board[0][1] == 0){
             board[0][1] = tile;
             board[0][0] = 0;
-        }
-
-        if(board[1][0] == 0){
+        } else if(board[1][0] == 0){
             board[1][0] = tile;
             board[0][0] = 0;
+        } else {
+            return false;
         }
+
+
     } else if (row == 0 && col == (d - 1)) {
         // Check if selected tile is at the top right
         // Only check left and down
         if(board[0][col - 1] == 0){
             board[0][col - 1] = tile;
             board[0][col] = 0;
-        }
-
-        if(board[1][col] == 0){
+        } else if(board[1][col] == 0){
             board[1][col] = tile;
             board[0][col] = 0;
+        } else {
+            return false;
         }
+
+
     } else if (row == 0){
         // Check if selected tile is in the top row
         // Check left, right and down
         if(board[0][col - 1] == 0){
             board[0][col - 1] = tile;
             board[0][col] = 0;
-        }
-
-        if(board[0][col + 1] == 0){
+        } else if(board[0][col + 1] == 0){
             board[0][col + 1] = tile;
             board[0][col] = 0;
-        }
-
-        if(board[1][col] == 0){
+        } else if(board[1][col] == 0){
             board[1][col] = tile;
             board[0][col] = 0;
+        } else {
+            return false;
         }
+
     } else if(row == (d - 1) && col == 0){
         // Check if selected tile is at the bottom left
         // Check up and right
         if(board[row - 1][0] == 0){
             board[row - 1][0] = tile;
             board[row][0] = 0;
-        }
-
-        if(board[row][1] == 0){
+        } else if(board[row][1] == 0){
             board[row][1] = tile;
             board[row][0] = 0;
+        } else {
+            return false;
         }
+
+
     } else if(row == (d - 1) && col == (d - 1)){
         // Check if selected tile is at the bottom right
         // Check up and left
         if(board[row][col - 1] == 0){
             board[row][col - 1] = tile;
             board[row][col] = 0;
-        }
-
-        if(board[row - 1][col] == 0){
+        } else if(board[row - 1][col] == 0){
             board[row - 1][col] = tile;
             board[row][col] = 0;
+        } else {
+            return false;
         }
+
+
     } else if(row == (d - 1)){
         // Check if selected tile is at the bottom row
         // check left, up and right
         if(board[row][col - 1] == 0){
             board[row][col - 1] = tile;
             board[row][col] = 0;
-        }
-
-        if(board[row][col + 1] = 0){
+        } else if(board[row][col + 1] == 0){
             board[row][col + 1] = tile;
             board[row][col] = 0;
+        } else if(board[row - 1][col] == 0){
+            board[row - 1][col] = tile;
+            board[row][col] = 0;
+        } else {
+            return false;
+        }
+
+    } else if (col == 0){
+        // Check if the tile selected is in the first column
+        // Check Top, right and down
+        if(board[row][col + 1] == 0){
+            board[row][col + 1] = tile;
+            board[row][col] = 0;
+        } else if(board[row - 1][col] == 0){
+            board[row - 1][col] = tile;
+            board[row][col] = 0;
+        } else if(board[row + 1][col] == 0){
+            board[row + 1][col] = tile;
+            board[row][col] = 0;
+        } else {
+            return false;
+        }
+
+    } else if(col == (d - 1)){
+        // Check if tile selected is in the last column
+        // Check top, left and down
+        if(board[row][col - 1] == 0){
+            board[row][col - 1] = tile;
+            board[row][col] = 0;
+        } else if(board[row - 1][col] == 0){
+            board[row - 1][col] = tile;
+            board[row][col] = 0;
+        } else if(board[row + 1][col] == 0){
+            board[row + 1][col] = tile;
+            board[row][col] = 0;
+        } else {
+            return false;
+        }
+
+    } else {
+        // It is at one of the center,
+        // Check all 4 Directions, N S W E
+
+        if(board[row][col - 1] == 0){
+            board[row][col - 1] = tile;
+            board[row][col] = 0;
+        } else if(board[row][col + 1] == 0){
+            board[row][col + 1] = tile;
+            board[row][col] = 0;
+        } else if(board[row - 1][col] == 0){
+            board[row - 1][col] = tile;
+            board[row][col] = 0;
+        } else if(board[row + 1][col] == 0){
+            board[row + 1][col] = tile;
+            board[row][col] = 0;
+        } else {
+            return false;
         }
     }
+    // Finished moving the tiles, Hoping it works
+    // Send true and redraw the tiles, Ready to Compile and Assert
 
-    usleep(5000000);
     return true;
 
 }
@@ -318,5 +381,39 @@ bool move(int tile)
 bool won(void)
 {
     // TODO
+
+    // Generate swap counter
+    int sc = 0;
+
+    for(int i = 0; i < (d - 1); i++){
+        for(int j = 0; j < (d - 1); j++){
+            // Check if the right value is incremented
+            if(board[i][j + 1] != board[i][j] + 1){
+                // Increment counter,
+                sc++;
+            }
+        }
+    }
+
+    // Check the last row excluding the zero
+    for(int i = 0; i < (d - 2); i++){
+        // Check if the following value is incremented by the current value
+        if(board[d - 1][i + 1] != board[d - 1][i] + 1){
+            // Increment counter
+            sc++;
+        }
+    }
+
+    // Zero must be at the bottom right, not top left,
+    if(board[0][0] == 0){
+        return false;
+    }
+
+    if(sc == 0){
+        return true;
+    }
+
+
+
     return false;
 }

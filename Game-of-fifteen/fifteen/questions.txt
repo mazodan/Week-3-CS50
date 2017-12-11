@@ -14,5 +14,5 @@
 3. What functions do you apparently need to implement?
     init() - check
     draw() - check
-    move()
-    won()
+    move() - check
+    won() - check
